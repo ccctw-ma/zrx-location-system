@@ -6,7 +6,7 @@ import "antd/dist/antd.css";
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import User from "./pages/User";
 import Info from "./pages/Info";
-import Parameter from "./pages/parameter";
+import Parameter from "./pages/Parameter";
 import CreateLocationInfos from "./pages/CreateLocationInfos";
 import QuertLocationInfos from "./pages/QuertLocationInfos";
 
