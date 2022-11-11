@@ -3,8 +3,12 @@ import React, { useEffect, useState } from "react";
 import map from "../assets/map.jpg";
 import data from "../assets/data.json";
 import axios from "axios";
+import { type } from "node:os";
 
 type Point = [number, number];
+type ZrxData = [string, number];
+const ZrxKey = ["accx", "accy", "accz", "roll", "yaw", "pitch"];
+
 let preCenter = [300.0, 300.0];
 let timer: NodeJS.Timeout | null = null;
 let i = 0,
@@ -14,6 +18,10 @@ const Info = () => {
     const [center, setCenter] = useState<Point>([0.0, 0.0]);
     const [particles, setParticles] = useState<Array<Point>>([[0.0, 0.0]]);
     const [run, setRun] = useState(false);
+    const [zrxDatas, setZrxData] = useState<Array<number>>(
+        new Array(6).fill(0.0)
+    );
+
     useEffect(() => {
         if (run) {
             timer = setInterval(() => {
@@ -34,7 +42,27 @@ const Info = () => {
                 // console.log(preCenter);
                 // preCenter = [x, y];
 
+                const dfs = (arr: any[] | undefined, i: number) => {
+                    if (arr === undefined || i == arr.length) {
+                        return;
+                    } else {
+                        const data = arr[i];
+                        let res = [];
+                        for (let key of ZrxKey) {
+                            res.push(data[key]);
+                        }
+                        setZrxData(res);
+                        setTimeout(() => {
+                            dfs(arr, i + 1);
+                        }, 100);
+                    }
+                };
+
                 // console.log(data[i]);
+                if (!!data[i].zrxData) {
+                    const zrxdatas = data[i].zrxData;
+                    dfs(zrxdatas, 0);
+                }
                 let loc = data[i].location;
                 let x = loc.x / 2,
                     y = loc.y / 2;
@@ -57,6 +85,10 @@ const Info = () => {
         } else {
             !!timer && clearInterval(timer);
         }
+
+        return () => {
+            !!timer && clearInterval(timer);
+        };
     }, [run]);
 
     useEffect(() => {
@@ -126,28 +158,40 @@ const Info = () => {
                     {run ? "结束监控" : "开始监控"}
                 </Button>
             </div>
-            <div className=" bg-slate-200 relative">
-                <img src={map} width="500px" height="500px" alt="" />
+            <div className="flex mt-4">
+                <div className="bg-[#4a5259] mr-8 px-8 py-2 flex flex-col justify-around min-w-[150px]">
+                    {zrxDatas.map((data, index) => {
+                        return (
+                            <div className="flex text-white justify-between">
+                                <span>{ZrxKey[index]}:</span>
+                                <span>{data}</span>
+                            </div>
+                        );
+                    })}
+                </div>
+                <div className=" bg-slate-200 relative">
+                    <img src={map} width="500px" height="500px" alt="" />
 
-                <div
-                    className="absolute bg-red-600 w-4 h-4 rounded-full"
-                    style={{
-                        left: `${center[0]}px`,
-                        top: `${center[1]}px`,
-                    }}
-                />
-                {particles.map((p, index) => {
-                    return (
-                        <div
-                            key={index}
-                            className={`absolute bg-green-600 w-1 h-1 rounded-full`}
-                            style={{
-                                left: `${p[0]}px`,
-                                top: `${p[1]}px`,
-                            }}
-                        />
-                    );
-                })}
+                    <div
+                        className="absolute bg-red-600 w-4 h-4 rounded-full"
+                        style={{
+                            left: `${center[0]}px`,
+                            top: `${center[1]}px`,
+                        }}
+                    />
+                    {particles.map((p, index) => {
+                        return (
+                            <div
+                                key={index}
+                                className={`absolute bg-green-600 w-1 h-1 rounded-full`}
+                                style={{
+                                    left: `${p[0]}px`,
+                                    top: `${p[1]}px`,
+                                }}
+                            />
+                        );
+                    })}
+                </div>
             </div>
         </div>
     );
