@@ -34,6 +34,7 @@ const items: MenuItem[] = [
     ]),
     getItem("算法测试", "2", <DesktopOutlined />, [
         getItem("参数设置", "parameter"),
+        getItem("定位复现", "recurrence")
     ]),
 
     getItem("定位信息管理", "3", <MailOutlined />, [
@@ -49,6 +50,7 @@ const items: MenuItem[] = [
 const keyToLabel = {
     infos: "定位信息查看",
     parameter: "参数设置",
+    recurrence: "定位复现",
     create: "创建定位信息",
     query: "定位信息查询",
     user: "用户管理",
@@ -81,8 +83,8 @@ const App: React.FC = () => {
                         }}
                     />
                 </div>
-                <div className="w-4/5 h-full flex justify-center items-center bg-gray-200">
-                    <div className="m-8 self-stretch flex-1 bg-white rounded flex flex-col">
+                <div className="w-4/5 h-full p-8 flex justify-center items-center bg-gray-200">
+                    <div className="w-full h-full bg-white rounded flex flex-col">
                         <div className="w-full h-16 flex items-center bg-[#4a5259]">
                             <div className="h-full ml-16 flex items-center border-b-2 border-[#ffb253]">
                                 <span className="text-lg text-[#ffb253] font-bold">

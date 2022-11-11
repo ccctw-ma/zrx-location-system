@@ -9,6 +9,7 @@ import Info from "./pages/Info";
 import Parameter from "./pages/Parameter";
 import CreateLocationInfos from "./pages/CreateLocationInfos";
 import QuertLocationInfos from "./pages/QuertLocationInfos";
+import Recurrence from "./pages/Recurrence";
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
             {
                 path: "parameter",
                 element: <Parameter />,
+            },
+            {
+                path: "recurrence",
+                element: <Recurrence />,
             },
             {
                 path: "create",

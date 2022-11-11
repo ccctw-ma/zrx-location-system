@@ -5,21 +5,19 @@ import {
     ShareAltOutlined,
 } from "@ant-design/icons";
 import { Table, Select, Input, Button } from "antd";
-import React from "react";
-
+import React, { useState } from "react";
+interface DataType {
+    key: React.Key;
+    name: string;
+    phone: string;
+    email: string;
+    userSpace: string;
+    permission: "管理员" | "VIP用户";
+}
 const User = () => {
     const { Column, ColumnGroup } = Table;
 
-    interface DataType {
-        key: React.Key;
-        name: string;
-        phone: string;
-        email: string;
-        userSpace: string;
-        permission: "管理员" | "VIP用户";
-    }
-
-    const data: DataType[] = [
+    const [data, setData] = useState<DataType[]>([
         {
             key: 1,
             name: "张三",
@@ -44,7 +42,7 @@ const User = () => {
             userSpace: "100MB",
             permission: "VIP用户",
         },
-    ];
+    ]);
     return (
         <div className="flex  mt-8 flex-col items-center">
             <div className="flex w-4/5  justify-around gap-2">
@@ -71,6 +69,21 @@ const User = () => {
                     type="primary"
                     shape="round"
                     icon={<PlusCircleOutlined />}
+                    onClick={() => {
+                        setData((p) => {
+                            return [
+                                {
+                                    key: Date.now(),
+                                    name: "xx",
+                                    phone: "10086",
+                                    email: "xxx@163.com",
+                                    userSpace: "100MB",
+                                    permission: "VIP用户",
+                                },
+                                ...p,
+                            ];
+                        });
+                    }}
                 >
                     添加
                 </Button>
